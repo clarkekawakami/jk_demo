@@ -1,0 +1,135 @@
+<!--facility_list.html-->
+
+    <div class="w-4/5 pt-0 overflow-x-auto relative shadow-md sm:rounded-lg">
+
+        <table class="w-full text-base text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr class="border-b-2 border-red-400">
+                    
+                    <td class="py-4 px-6"><h2 class="text-red-600 text-2xl py-2">{{ .subtitle }}</h2></td>
+                    
+                    <td></td>
+                    
+                    <td></td>
+                    
+                    <td></td>
+                    
+                    <td></td>
+                    
+                    <td></td>
+                    
+                    <td></td>
+                    
+                    <td></td>
+                    
+                    <td></td>
+                    
+                    <td class="py-4 px-6">
+                    <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                        hx-get="/facility_form/new"
+                        hx-trigger="click"
+                        hx-target="#action_content">New Record</button>    
+                    </td>
+                </tr>
+                <tr>
+                    
+                    <th scope="col" class="py-3 px-6">
+                        ID 
+                    </th>
+                    
+                    <th scope="col" class="py-3 px-6">
+                        Name 
+                    </th>
+                    
+                    <th scope="col" class="py-3 px-6">
+                        Description 
+                    </th>
+                    
+                    <th scope="col" class="py-3 px-6">
+                        Address 
+                    </th>
+                    
+                    <th scope="col" class="py-3 px-6">
+                        City 
+                    </th>
+                    
+                    <th scope="col" class="py-3 px-6">
+                        State 
+                    </th>
+                    
+                    <th scope="col" class="py-3 px-6">
+                        Zip 
+                    </th>
+                    
+                    <th scope="col" class="py-3 px-6">
+                        Telephone 
+                    </th>
+                    
+                    <th scope="col" class="py-3 px-6">
+                        Email 
+                    </th>
+                    
+                    <th scope="col" class="py-3 px-6">
+                        Action
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {{ range .facilities  }}
+                <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                    
+                    <td class="py-4 px-6">
+                        {{ .ID }}
+                    </td>
+                    
+                    <td class="py-4 px-6">
+                        {{ .Name }}
+                    </td>
+                    
+                    <td class="py-4 px-6">
+                        {{ .Description }}
+                    </td>
+                    
+                    <td class="py-4 px-6">
+                        {{ .Address }}
+                    </td>
+                    
+                    <td class="py-4 px-6">
+                        {{ .City }}
+                    </td>
+                    
+                    <td class="py-4 px-6">
+                        {{ .State }}
+                    </td>
+                    
+                    <td class="py-4 px-6">
+                        {{ .Zip }}
+                    </td>
+                    
+                    <td class="py-4 px-6">
+                        {{ .Telephone }}
+                    </td>
+                    
+                    <td class="py-4 px-6">
+                        {{ .Email }}
+                    </td>
+                    
+                    <td class="py-4 px-6">
+                        <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                        hx-get="/facility_form/{{ .ID }}"
+                        hx-trigger="click"
+                        hx-target="#action_content">Edit</button>   
+
+                        <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                        hx-confirm="Are you sure you wish to delete this record?"
+                        hx-delete="/facilities/{{ .ID }}"
+                        hx-trigger="click"
+                        hx-target="#action_content">Delete</button>            
+                    </td>
+                </tr>
+                {{ end }}
+
+            </tbody>
+        </table>
+    </div>

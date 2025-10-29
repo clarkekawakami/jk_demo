@@ -1,0 +1,15 @@
+<!--appointments_page.html-->
+
+<!--Embed the header.html template at this location-->
+{{ template "header.html" .}}
+
+    <div class="flex items-center justify-center w-full">
+        <h1 class="w-4/5 text-red-600 text-3xl py-6">{{ .title }}</h1>
+    </div>
+
+    <div id="action_content" class="flex items-center justify-center w-full">
+    {{ template "appointment_list.html" .}}
+    </div> 
+
+<!--Embed the footer.html template at this location-->
+{{ template "footer.html" .}}

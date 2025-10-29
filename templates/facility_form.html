@@ -1,0 +1,79 @@
+<!--userform.html-->
+<div class="w-4/5 pt-0 overflow-x-auto relative shadow-md sm:rounded-lg">
+
+    <h2 class="text-red-600 text-2xl py-2">{{ .subtitle }}</h2>
+
+    <form id="edit_form" 
+            hx-{{.action}}="/facilities/{{.facility.ID }}"
+            hx-trigger="submit"
+            hx-target="#action_content"> 
+        
+            
+            <div class="mb-6">
+                <label for="ID" class="block mb-2 text-base font-medium text-gray-900 dark:text-white">ID</label>
+                <input type="text" name="ID" id="ID" value="{{.facility.ID }}" class="bg-gray-100 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" disabled readonly>
+            </div>
+            
+        
+            
+            <div class="mb-6">
+                <label for="Name" class="block mb-2 text-base font-medium text-gray-900 dark:text-white">Name</label>
+                <input type="text" name="Name" id="Name" value="{{.facility.Name }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="User Name" required>
+            </div> 
+            
+        
+            
+            <div class="mb-6">
+                <label for="Description" class="block mb-2 text-base font-medium text-gray-900 dark:text-white">Description</label>
+                <input type="text" name="Description" id="Description" value="{{.facility.Description }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="User Name" required>
+            </div> 
+            
+        
+            
+            <div class="mb-6">
+                <label for="Address" class="block mb-2 text-base font-medium text-gray-900 dark:text-white">Address</label>
+                <input type="text" name="Address" id="Address" value="{{.facility.Address }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="User Name" required>
+            </div> 
+            
+        
+            
+            <div class="mb-6">
+                <label for="City" class="block mb-2 text-base font-medium text-gray-900 dark:text-white">City</label>
+                <input type="text" name="City" id="City" value="{{.facility.City }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="User Name" required>
+            </div> 
+            
+        
+            
+            <div class="mb-6">
+                <label for="State" class="block mb-2 text-base font-medium text-gray-900 dark:text-white">State</label>
+                <input type="text" name="State" id="State" value="{{.facility.State }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="User Name" required>
+            </div> 
+            
+        
+            
+            <div class="mb-6">
+                <label for="Zip" class="block mb-2 text-base font-medium text-gray-900 dark:text-white">Zip</label>
+                <input type="text" name="Zip" id="Zip" value="{{.facility.Zip }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="User Name" required>
+            </div> 
+            
+        
+            
+            <div class="mb-6">
+                <label for="Telephone" class="block mb-2 text-base font-medium text-gray-900 dark:text-white">Telephone</label>
+                <input type="text" name="Telephone" id="Telephone" value="{{.facility.Telephone }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="User Name" required>
+            </div> 
+            
+        
+            
+            <div class="mb-6">
+                <label for="Email" class="block mb-2 text-base font-medium text-gray-900 dark:text-white">Email</label>
+                <input type="text" name="Email" id="Email" value="{{.facility.Email }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="User Name" required>
+            </div> 
+            
+        
+
+        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-base w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            Save</button>
+    </form>    
+
+</div>
