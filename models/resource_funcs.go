@@ -22,6 +22,15 @@ func GetResources(db *gorm.DB, Resource *[]Resource) (err error) {
 	return nil
 }
 
+// get Resource
+func GetFacilityResources(db *gorm.DB, Resource *[]Resource, facilityID int) (err error) {
+	err = db.Where("facility_id = ?", facilityID).Find(Resource).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // get Resource by id
 func GetResource(db *gorm.DB, Resource *Resource, id int) (err error) {
 	err = db.Where("id = ?", id).First(Resource).Error
