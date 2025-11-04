@@ -68,7 +68,7 @@ func (repository *UserRepo) CreateAppointment(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	fmt.Println("appointment after bind::::::", *&appointment)
+	fmt.Println("appointment after bind::::::", appointment)
 
 	err := models.CreateAppointment(repository.Db, &appointment)
 	if err != nil {
@@ -230,6 +230,12 @@ func (repository *UserRepo) GetAvailablePage(c *gin.Context) {
 func (repository *UserRepo) SearchForOpen(c *gin.Context) {
 	var searchFor models.PostSearchRequest
 
+	if c.Param("output") == "html" {
+		fmt.Println("output format:::::: HTML")
+	} else {
+		fmt.Println("output format:::::: JSON")
+	}
+
 	// This will infer what binder to use depending on the content-type header.
 	if err := c.ShouldBind(&searchFor); err != nil {
 		fmt.Println("bind error:::::::::", err)
@@ -362,13 +368,18 @@ func (repository *UserRepo) SearchForOpen(c *gin.Context) {
 	// 	c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err1})
 	// 	return
 	// }
-	c.HTML(http.StatusOK,
-		"available_list_body1.html",
-		gin.H{
-			"appointments": appointmentsResult,
-			"subtitle":     "Available List",
-		},
-	)
+
+	if c.Param("output") == "html" {
+		c.HTML(http.StatusOK,
+			"available_list_body1.html",
+			gin.H{
+				"appointments": appointmentsResult,
+				"subtitle":     "Available List",
+			},
+		)
+	} else {
+		c.JSON(http.StatusOK, appointmentsResult)
+	}
 }
 
 // reseed the appointments table

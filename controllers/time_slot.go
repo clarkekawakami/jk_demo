@@ -12,95 +12,95 @@ import (
 	"gorm.io/gorm"
 )
 
-// get html facilities page
-func (repository *UserRepo) GetFacilitysPage(c *gin.Context) {
-	var facility []models.Facility
+// get html time_slots page
+func (repository *UserRepo) GetTime_slotsPage(c *gin.Context) {
+	var time_slot []models.Time_slot
 
-	err := models.GetFacilitys(repository.Db, &facility)
+	err := models.GetTime_slots(repository.Db, &time_slot)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
 	}
-	// fmt.Printf("%+v\n", facility)
-	// fmt.Println("facility::::::", facility)
+	// fmt.Printf("%+v\n", time_slot)
+	// fmt.Println("time_slot::::::", time_slot)
 
 	c.HTML(http.StatusOK,
-		"facilities_page.html",
+		"time_slots_page.html",
 		gin.H{
-			"facilities": facility,
-			"title":      "Facilities Table",
+			"time_slots": time_slot,
+			"title":      "Time_slots Table",
 			"subtitle":   "List",
-			"active":     "facility",
+			"active":     "time_slot",
 		},
 	)
 
 }
 
-// get html facilities list
-func (repository *UserRepo) GetFacilitysList(c *gin.Context) {
-	var facility []models.Facility
+// get html time_slots list
+func (repository *UserRepo) GetTime_slotsList(c *gin.Context) {
+	var time_slot []models.Time_slot
 
-	err := models.GetFacilitys(repository.Db, &facility)
+	err := models.GetTime_slots(repository.Db, &time_slot)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
 	}
-	fmt.Printf("%+v\n", facility)
-	// c.JSON(http.StatusOK, facility)
+	fmt.Printf("%+v\n", time_slot)
+	// c.JSON(http.StatusOK, time_slot)
 	c.HTML(http.StatusOK,
-		"facility_list.html",
+		"time_slot_list.html",
 		gin.H{
-			"facilities": facility,
+			"time_slots": time_slot,
 			"subtitle":   "List",
 		},
 	)
 }
 
-// create Facility
-func (repository *UserRepo) CreateFacility(c *gin.Context) {
-	var facility models.Facility
+// create Time_slot
+func (repository *UserRepo) CreateTime_slot(c *gin.Context) {
+	var time_slot models.Time_slot
 
 	// This will infer what binder to use depending on the content-type header.
-	if err := c.ShouldBind(&facility); err != nil {
+	if err := c.ShouldBind(&time_slot); err != nil {
 		fmt.Println("bind error:::::::::", err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	fmt.Println("facility after bind::::::", facility)
+	fmt.Println("time_slot after bind::::::", time_slot)
 
-	err := models.CreateFacility(repository.Db, &facility)
+	err := models.CreateTime_slot(repository.Db, &time_slot)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
 	}
 
-	// now get the facility list
-	var facilities []models.Facility
+	// now get the time_slot list
+	var time_slots []models.Time_slot
 
-	err1 := models.GetFacilitys(repository.Db, &facilities)
+	err1 := models.GetTime_slots(repository.Db, &time_slots)
 	if err1 != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err1})
 		return
 	}
 	c.HTML(http.StatusOK,
-		"facility_list.html",
+		"time_slot_list.html",
 		gin.H{
-			"facilities": facilities,
+			"time_slots": time_slots,
 			"subtitle":   "List",
 		},
 	)
 }
 
-// get html facilities form
-func (repository *UserRepo) GetFacilityForm(c *gin.Context) {
-	var facility models.Facility
+// get html time_slots form
+func (repository *UserRepo) GetTime_slotForm(c *gin.Context) {
+	var time_slot models.Time_slot
 	subtitle := "Edit Record"
 	action := "put"
 
 	if c.Param("id") != "new" {
 
 		id, _ := strconv.Atoi(c.Param("id"))
-		err := models.GetFacility(repository.Db, &facility, id)
+		err := models.GetTime_slot(repository.Db, &time_slot, id)
 		if err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				c.AbortWithStatus(http.StatusNotFound)
@@ -115,22 +115,22 @@ func (repository *UserRepo) GetFacilityForm(c *gin.Context) {
 		action = "post"
 	}
 	c.HTML(http.StatusOK,
-		"facility_form.html",
+		"time_slot_form.html",
 		gin.H{
-			"facility": facility,
-			"subtitle": subtitle,
-			"action":   action,
+			"time_slot": time_slot,
+			"subtitle":  subtitle,
+			"action":    action,
 		},
 	)
 
 }
 
-// update Facility
-func (repository *UserRepo) UpdateFacility(c *gin.Context) {
-	var facility models.Facility
+// update Time_slot
+func (repository *UserRepo) UpdateTime_slot(c *gin.Context) {
+	var time_slot models.Time_slot
 
 	id, _ := strconv.Atoi(c.Param("id"))
-	err := models.GetFacility(repository.Db, &facility, id)
+	err := models.GetTime_slot(repository.Db, &time_slot, id)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			c.AbortWithStatus(http.StatusNotFound)
@@ -142,55 +142,55 @@ func (repository *UserRepo) UpdateFacility(c *gin.Context) {
 	}
 
 	// This will infer what binder to use depending on the content-type header.
-	if err := c.ShouldBind(&facility); err != nil {
+	if err := c.ShouldBind(&time_slot); err != nil {
 		fmt.Println("bind error:::::::::", err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	err = models.UpdateFacility(repository.Db, &facility)
+	err = models.UpdateTime_slot(repository.Db, &time_slot)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
 	}
-	// now get the Facility list
-	var facilities []models.Facility
+	// now get the Time_slot list
+	var time_slots []models.Time_slot
 
-	err1 := models.GetFacilitys(repository.Db, &facilities)
+	err1 := models.GetTime_slots(repository.Db, &time_slots)
 	if err1 != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err1})
 		return
 	}
 	c.HTML(http.StatusOK,
-		"facility_list.html",
+		"time_slot_list.html",
 		gin.H{
-			"facilities": facilities,
+			"time_slots": time_slots,
 			"subtitle":   "List",
 		},
 	)
 }
 
-// delete Facility
-func (repository *UserRepo) DeleteFacility(c *gin.Context) {
-	var facility models.Facility
+// delete Time_slot
+func (repository *UserRepo) DeleteTime_slot(c *gin.Context) {
+	var time_slot models.Time_slot
 	id, _ := strconv.Atoi(c.Param("id"))
-	err := models.DeleteFacility(repository.Db, &facility, id)
+	err := models.DeleteTime_slot(repository.Db, &time_slot, id)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
 	}
-	// now get the Facility list
-	var facilities []models.Facility
+	// now get the Time_slot list
+	var time_slots []models.Time_slot
 
-	err1 := models.GetFacilitys(repository.Db, &facilities)
+	err1 := models.GetTime_slots(repository.Db, &time_slots)
 	if err1 != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err1})
 		return
 	}
 	c.HTML(http.StatusOK,
-		"facility_list.html",
+		"time_slot_list.html",
 		gin.H{
-			"facilities": facilities,
+			"time_slots": time_slots,
 			"subtitle":   "List",
 		},
 	)

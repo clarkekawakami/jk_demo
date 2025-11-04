@@ -60,6 +60,12 @@ func setupRouter() *gin.Engine {
 	r.POST("/resources/0", userRepo.CreateResource)
 	r.DELETE("/resources/:id", userRepo.DeleteResource)
 	r.PUT("/resources/:id", userRepo.UpdateResource)
+	// // time_slots
+	r.GET("/time_slots", userRepo.GetTime_slotsPage)
+	r.GET("/time_slot_form/:id", userRepo.GetTime_slotForm)
+	r.POST("/time_slots/0", userRepo.CreateTime_slot)
+	r.DELETE("/time_slots/:id", userRepo.DeleteTime_slot)
+	r.PUT("/time_slots/:id", userRepo.UpdateTime_slot)
 	// // appointments
 	r.GET("/appointments", userRepo.GetAppointmentsPage)
 	r.GET("/appointments/reseed", userRepo.ReseedAppointments)
@@ -67,8 +73,8 @@ func setupRouter() *gin.Engine {
 	r.POST("/appointments/0", userRepo.CreateAppointment)
 	r.DELETE("/appointments/:id", userRepo.DeleteAppointment)
 	r.PUT("/appointments/:id", userRepo.UpdateAppointment)
-	r.GET("/available", userRepo.GetAvailablePage)
-	r.POST("/available", userRepo.SearchForOpen)
+	r.GET("/available_page", userRepo.GetAvailablePage)
+	r.POST("/available/:output", userRepo.SearchForOpen)
 
 	return r
 }

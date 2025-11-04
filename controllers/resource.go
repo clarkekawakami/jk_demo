@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	
 	"jk_demo/models"
 
 	"errors"
@@ -12,7 +11,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
-
 
 // get html resources page
 func (repository *UserRepo) GetResourcesPage(c *gin.Context) {
@@ -29,10 +27,10 @@ func (repository *UserRepo) GetResourcesPage(c *gin.Context) {
 	c.HTML(http.StatusOK,
 		"resources_page.html",
 		gin.H{
-			"resources":     resource,
-			"title":    "Resources Table",
-			"subtitle": "List",
-			"active":   "resource",
+			"resources": resource,
+			"title":     "Resources Table",
+			"subtitle":  "List",
+			"active":    "resource",
 		},
 	)
 
@@ -52,8 +50,8 @@ func (repository *UserRepo) GetResourcesList(c *gin.Context) {
 	c.HTML(http.StatusOK,
 		"resource_list.html",
 		gin.H{
-			"resources":     resource,
-			"subtitle": "List",
+			"resources": resource,
+			"subtitle":  "List",
 		},
 	)
 }
@@ -68,7 +66,7 @@ func (repository *UserRepo) CreateResource(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	fmt.Println("resource after bind::::::", *&resource)
+	fmt.Println("resource after bind::::::", resource)
 
 	err := models.CreateResource(repository.Db, &resource)
 	if err != nil {
@@ -87,8 +85,8 @@ func (repository *UserRepo) CreateResource(c *gin.Context) {
 	c.HTML(http.StatusOK,
 		"resource_list.html",
 		gin.H{
-			"resources":     resources,
-			"subtitle": "List",
+			"resources": resources,
+			"subtitle":  "List",
 		},
 	)
 }
@@ -119,7 +117,7 @@ func (repository *UserRepo) GetResourceForm(c *gin.Context) {
 	c.HTML(http.StatusOK,
 		"resource_form.html",
 		gin.H{
-			"resource":      resource,
+			"resource": resource,
 			"subtitle": subtitle,
 			"action":   action,
 		},
@@ -166,8 +164,8 @@ func (repository *UserRepo) UpdateResource(c *gin.Context) {
 	c.HTML(http.StatusOK,
 		"resource_list.html",
 		gin.H{
-			"resources":     resources,
-			"subtitle": "List",
+			"resources": resources,
+			"subtitle":  "List",
 		},
 	)
 }
@@ -192,8 +190,8 @@ func (repository *UserRepo) DeleteResource(c *gin.Context) {
 	c.HTML(http.StatusOK,
 		"resource_list.html",
 		gin.H{
-			"resources":     resources,
-			"subtitle": "List",
+			"resources": resources,
+			"subtitle":  "List",
 		},
 	)
 }
