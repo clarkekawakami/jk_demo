@@ -54,7 +54,7 @@ func setupRouter() *gin.Engine {
 	r.POST("/facilities/0", userRepo.CreateFacility)
 	r.DELETE("/facilities/:id", userRepo.DeleteFacility)
 	r.PUT("/facilities/:id", userRepo.UpdateFacility)
-	r.GET("/facilities_by_location/:loc", userRepo.GetFacilitysByLocationList)
+	r.GET("/facilities_by_location/:loc/:output", userRepo.GetFacilitysByLocationList)
 	// // resources
 	r.GET("/resources", userRepo.GetResourcesPage)
 	r.GET("/resource_form/:id", userRepo.GetResourceForm)

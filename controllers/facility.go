@@ -202,18 +202,29 @@ func (repository *UserRepo) GetFacilitysByLocationList(c *gin.Context) {
 
 	loc := c.Param("loc")
 
+	output := c.Param("output")
+	fmt.Println("Location Param::::::", loc)
+	fmt.Println("Output Param::::::", output)
+
 	err := models.GetFacilitysByLocation(repository.Db, &facility, loc)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
 	}
-	fmt.Printf("%+v\n", facility)
-	// c.JSON(http.StatusOK, facility)
-	c.HTML(http.StatusOK,
-		"facility_list.html",
-		gin.H{
-			"facilities": facility,
-			"subtitle":   "List",
-		},
-	)
+	// fmt.Printf("%+v\n", facility)
+
+	if output == "json" {
+		c.JSON(http.StatusOK, facility)
+	} else {
+
+		c.HTML(http.StatusOK,
+			"facilities_page.html",
+			gin.H{
+				"facilities": facility,
+				"title":      "Facilities Table",
+				"subtitle":   "List",
+				"active":     "facility",
+			},
+		)
+	}
 }
