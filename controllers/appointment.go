@@ -348,9 +348,9 @@ func (repository *UserRepo) SearchForOpen(c *gin.Context) {
 	fmt.Println("availableAppointments::::::", availableAppointments)
 
 	// build appointment structs for available times
-	var appointmentsResult []models.Appointment
+	var appointmentsResult []models.PostSearchResponse
 	for _, availTime := range availableAppointments {
-		appt := models.Appointment{
+		appt := models.PostSearchResponse{
 			FacilityID: searchFor.FacilityID,
 			Appt_Date:  searchFor.ReqDate,
 			Appt_Time:  availTime,
@@ -358,7 +358,7 @@ func (repository *UserRepo) SearchForOpen(c *gin.Context) {
 		appointmentsResult = append(appointmentsResult, appt)
 	}
 
-	// fmt.Println("appointmentsResult::::::", appointmentsResult)
+	fmt.Println("appointmentsResult::::::", appointmentsResult)
 
 	// now get the appointment list
 	// var appointments []models.Appointment

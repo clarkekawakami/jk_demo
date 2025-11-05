@@ -195,3 +195,25 @@ func (repository *UserRepo) DeleteFacility(c *gin.Context) {
 		},
 	)
 }
+
+// get html facilities list by location
+func (repository *UserRepo) GetFacilitysByLocationList(c *gin.Context) {
+	var facility []models.Facility
+
+	loc := c.Param("loc")
+
+	err := models.GetFacilitysByLocation(repository.Db, &facility, loc)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
+	}
+	fmt.Printf("%+v\n", facility)
+	// c.JSON(http.StatusOK, facility)
+	c.HTML(http.StatusOK,
+		"facility_list.html",
+		gin.H{
+			"facilities": facility,
+			"subtitle":   "List",
+		},
+	)
+}

@@ -23,6 +23,7 @@ type PostSearchRequest struct {
 }
 
 type PostSearchResponse struct {
-	Status string `json:"stat"`
-	Result bool   `json:"result"`
+	FacilityID int
+	Appt_Date  string
+	Appt_Time  string
 }

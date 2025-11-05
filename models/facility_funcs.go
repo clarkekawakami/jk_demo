@@ -1,6 +1,10 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"fmt"
+
+	"gorm.io/gorm"
+)
 
 // Facility entity functions
 
@@ -16,6 +20,23 @@ func CreateFacility(db *gorm.DB, Facility *Facility) (err error) {
 // get Facility
 func GetFacilitys(db *gorm.DB, Facility *[]Facility) (err error) {
 	err = db.Find(Facility).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// get Facility by location
+func GetFacilitysByLocation(db *gorm.DB, Facility *[]Facility, loc string) (err error) {
+	whereClause := "state = ?"
+	if len(loc) > 0 && loc[0] >= '0' && loc[0] <= '9' {
+		fmt.Println("The first character is a digit.", loc)
+		whereClause = "zip = ?"
+	} else {
+		fmt.Println("The first character is not a digit or the string is empty.", loc)
+	}
+
+	err = db.Where(whereClause, loc).Find(Facility).Error
 	if err != nil {
 		return err
 	}
