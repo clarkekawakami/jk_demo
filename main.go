@@ -71,7 +71,7 @@ func setupRouter() *gin.Engine {
 	r.GET("/appointments", userRepo.GetAppointmentsPage)
 	r.GET("/appointments/reseed", userRepo.ReseedAppointments)
 	r.GET("/appointment_form/:id", userRepo.GetAppointmentForm)
-	r.POST("/appointments/0", userRepo.CreateAppointment)
+	r.POST("/appointments/:output", userRepo.CreateAppointment)
 	r.DELETE("/appointments/:id", userRepo.DeleteAppointment)
 	r.PUT("/appointments/:id", userRepo.UpdateAppointment)
 	r.GET("/available_page", userRepo.GetAvailablePage)

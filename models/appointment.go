@@ -27,3 +27,15 @@ type PostSearchResponse struct {
 	Appt_Date  string
 	Appt_Time  string
 }
+
+type NewAppointmentView struct {
+	FacilityDesc    string
+	FacilityAddress string
+	FacilityCity    string
+	FacilityState   string
+	FacilityZip     string
+	FacilityPhone   string
+	ResourceDesc    string
+	Appt_Date       string
+	Appt_Time       string
+}

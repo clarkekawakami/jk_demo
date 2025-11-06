@@ -62,35 +62,70 @@ func (repository *UserRepo) GetAppointmentsList(c *gin.Context) {
 func (repository *UserRepo) CreateAppointment(c *gin.Context) {
 	var appointment models.Appointment
 
+	if c.Param("output") == "html" {
+		fmt.Println("output format:::::: HTML")
+	} else {
+		fmt.Println("output format:::::: JSON")
+	}
+
 	// This will infer what binder to use depending on the content-type header.
 	if err := c.ShouldBind(&appointment); err != nil {
 		fmt.Println("bind error:::::::::", err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	fmt.Println("appointment after bind::::::", appointment)
+	// fmt.Println("appointment after bind::::::", appointment)
+	appointment.Status = "Scheduled"
+	// fmt.Println("appointment after status::::::", appointment)
 
 	err := models.CreateAppointment(repository.Db, &appointment)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
+	} else {
+		fmt.Println("appointment created with ID::::::", appointment.ID)
 	}
+	newApptId := appointment.ID
+	fmt.Println("newApptId::::::", newApptId)
 
-	// now get the appointment list
-	var appointments []models.Appointment
+	// now if sending json to the api caller, return the new appointment record as json
+	if c.Param("output") == "json" {
+		var newAppointment models.Appointment
+		err := models.GetAppointment(repository.Db, &newAppointment, newApptId)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err})
+			return
+		}
+		// now get new appointment details for view
+		var newAppointmentView models.NewAppointmentView
+		err = models.GetNewAppointmentView(repository.Db, &newAppointmentView, newApptId)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err})
+			return
+		}
+		fmt.Printf("newAppointmentView:::::: %+v\n", newAppointmentView)
 
-	err1 := models.GetAppointments(repository.Db, &appointments)
-	if err1 != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err1})
+		c.JSON(http.StatusOK, newAppointmentView)
 		return
+	} else {
+		fmt.Println("output format:::::: HTML")
+
+		// now get the appointment list
+		var appointments []models.Appointment
+
+		err1 := models.GetAppointments(repository.Db, &appointments)
+		if err1 != nil {
+			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err1})
+			return
+		}
+		c.HTML(http.StatusOK,
+			"appointment_list.html",
+			gin.H{
+				"appointments": appointments,
+				"subtitle":     "List",
+			},
+		)
 	}
-	c.HTML(http.StatusOK,
-		"appointment_list.html",
-		gin.H{
-			"appointments": appointments,
-			"subtitle":     "List",
-		},
-	)
 }
 
 // get html appointments form
