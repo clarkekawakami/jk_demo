@@ -62,6 +62,48 @@ func (repository *UserRepo) GetAppointmentsList(c *gin.Context) {
 func (repository *UserRepo) CreateAppointment(c *gin.Context) {
 	var appointment models.Appointment
 
+	// This will infer what binder to use depending on the content-type header.
+	if err := c.ShouldBind(&appointment); err != nil {
+		fmt.Println("bind error:::::::::", err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	fmt.Println("appointment after bind::::::", appointment)
+	appointment.Status = "Scheduled"
+	fmt.Println("appointment after status::::::", appointment)
+
+	err := models.CreateAppointment(repository.Db, &appointment)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err})
+		// return
+	} else {
+		fmt.Println("appointment created with ID::::::", appointment.ID)
+	}
+	newApptId := appointment.ID
+	fmt.Println("newApptId::::::", newApptId)
+	fmt.Println("output format:::::: HTML")
+
+	// now get the appointment list
+	var appointments []models.Appointment
+
+	err1 := models.GetAppointments(repository.Db, &appointments)
+	if err1 != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err1})
+		return
+	}
+	c.HTML(http.StatusOK,
+		"appointment_list.html",
+		gin.H{
+			"appointments": appointments,
+			"subtitle":     "List",
+		},
+	)
+}
+
+// create Appointment
+func (repository *UserRepo) CreateSelectedAppointment(c *gin.Context) {
+	var appointment models.Appointment
+
 	if c.Param("output") == "html" {
 		fmt.Println("output format:::::: HTML")
 	} else {
@@ -74,14 +116,55 @@ func (repository *UserRepo) CreateAppointment(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	// fmt.Println("appointment after bind::::::", appointment)
-	appointment.Status = "Scheduled"
-	// fmt.Println("appointment after status::::::", appointment)
 
-	err := models.CreateAppointment(repository.Db, &appointment)
+	fmt.Println("appointment after bind::::::", appointment)
+	appointment.Status = "Scheduled"
+	appointment.UserID = 2
+	appointment.FacilityID, _ = strconv.Atoi(c.Param("fac_id"))
+	appointment.Appt_Date = c.Param("appt_date")
+	appointment.Appt_Time = c.Param("appt_time")
+	fmt.Println("appointment after assignments b4 resources::::::", appointment)
+
+	// need to assign a resource that is not already booked for that date/time
+	var resources []models.Resource
+	err := models.GetFacilityResources(repository.Db, &resources, appointment.FacilityID)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
+	}
+	fmt.Println("resources for facility::::::", resources)
+
+	// get existing appointments for that date, facility and time
+	var existingAppointments []models.Appointment
+	err = models.GetDateFacilityAppointments(repository.Db, &existingAppointments, appointment.Appt_Date, appointment.FacilityID, appointment.Appt_Time, appointment.Appt_Time)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
+	}
+
+	fmt.Println("existingAppointments for date/time::::::", existingAppointments)
+	fmt.Println("first resource", resources[0].ID)
+
+	// find first resource that is not already booked
+	appointment.ResourceID = resources[0].ID
+
+OuterLoop:
+	for _, resource := range resources {
+		// isBooked := false
+		for _, existingAppt := range existingAppointments {
+			if existingAppt.ResourceID != resource.ID {
+				appointment.ResourceID = resource.ID
+				break OuterLoop
+			}
+		}
+	}
+
+	fmt.Println("appointment after assignments w/ resources::::::", appointment)
+
+	err = models.CreateAppointment(repository.Db, &appointment)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err})
+		// return
 	} else {
 		fmt.Println("appointment created with ID::::::", appointment.ID)
 	}
@@ -94,7 +177,7 @@ func (repository *UserRepo) CreateAppointment(c *gin.Context) {
 		err := models.GetAppointment(repository.Db, &newAppointment, newApptId)
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err})
-			return
+			// return
 		}
 		// now get new appointment details for view
 		var newAppointmentView models.NewAppointmentView
@@ -331,15 +414,43 @@ func (repository *UserRepo) SearchForOpen(c *gin.Context) {
 			"16:30:00",
 			"17:00:00",
 		}
-	default:
+	case "evening":
 		// default to evening
 		start_time = "17:00:00"
-		end_time = "19:00:00"
+		end_time = "18:30:00"
 		slotTimes = []string{"17:00:00",
 			"17:30:00",
 			"18:00:00",
 			"18:30:00",
-			"19:00:00",
+		}
+	default:
+		// default to all day 07:00 to 18:30
+		start_time = "07:00:00"
+		end_time = "19:00:00"
+		slotTimes = []string{"07:00:00",
+			"07:30:00",
+			"08:00:00",
+			"08:30:00",
+			"09:00:00",
+			"09:30:00",
+			"10:00:00",
+			"10:30:00",
+			"11:00:00",
+			"11:30:00",
+			"12:00:00",
+			"12:30:00",
+			"13:00:00",
+			"13:30:00",
+			"14:00:00",
+			"14:30:00",
+			"15:00:00",
+			"15:30:00",
+			"16:00:00",
+			"16:30:00",
+			"17:00:00",
+			"17:30:00",
+			"18:00:00",
+			"18:30:00",
 		}
 	}
 

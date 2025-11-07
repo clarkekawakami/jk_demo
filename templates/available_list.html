@@ -32,6 +32,7 @@
                         <label for="ReqTimeRange" class="block mb-2 text-base font-medium text-gray-900 dark:text-white">Time Range</label>
                         <!-- <input type="text" name="ReqTimeRange" id="ReqTimeRange" value="{{.appointment.Appt_Time }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Time Preference" required> -->
                         <select name="ReqTimeRange" id="ReqTimeRange" class="bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                            <option value="any">Any Available</option>
                             <option value="early_morning">Early Morning (7am-9am)</option>
                             <option value="late_morning">Late Morning (9am-12pm)</option>
                             <option value="early_afternoon">Early Afternoon (12pm-3pm)</option>
@@ -128,7 +129,7 @@
                     
                     <td class="py-4 px-6">
                         <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                        hx-get="/appointment_form/{{ .ID }}"
+                        hx-post="/appointments/html"
                         hx-trigger="click"
                         hx-target="#action_content">Select</button>   
 

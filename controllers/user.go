@@ -79,7 +79,7 @@ func (repository *UserRepo) CreateUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	fmt.Println("user after bind::::::", *&user)
+	fmt.Println("user after bind::::::", user)
 
 	err := models.CreateUser(repository.Db, &user)
 	if err != nil {
